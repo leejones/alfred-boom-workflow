@@ -1,0 +1,6 @@
+# ignore testing binaries
+alfred-boom-search
+
+*.swo
+*.swp
+
