@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -e
+
+BUILD_DIRECTORY=tmp/build
+
+# create a clean directory
+rm -rf $BUILD_DIRECTORY
+mkdir -p $BUILD_DIRECTORY
+
+# build the project
+echo "Building alfred-boom-search.go..."
+go build -o $BUILD_DIRECTORY/alfred-boom-search alfred-boom-search.go
+
+echo "Created $BUILD_DIRECTORY/alfred-boom-search"
