@@ -10,7 +10,8 @@ mkdir -p $BUILD_DIRECTORY
 
 # build the project
 echo "Building boom package..."
-go build -o pkg/boom boom
+go build -o $BUILD_DIRECTORY/boom boom
+echo "Created package: $BUILD_DIRECTORY/boom"
 
 echo "Building alfred-boom-search binary..."
 go build -o $BUILD_DIRECTORY/alfred-boom-search alfred-boom-search.go
