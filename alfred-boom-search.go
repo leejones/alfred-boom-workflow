@@ -5,6 +5,7 @@ import "flag"
 import "os"
 import "io/ioutil"
 import "encoding/json"
+import "boom"
 
 
 func main() {
@@ -53,4 +54,20 @@ func main() {
 
   fmt.Println("Storage Path:")
   fmt.Println(" ", storage_path)
+
+  fmt.Println("Calling functions from boom package:")
+  data := boom.ParseBoomDataFile(storage_path)
+
+  fmt.Println(" ", "List names:")
+  for _, name := range boom.ListNames(data) {
+    fmt.Println(" ", " ", name)
+  }
+
+  fmt.Println(" ", "Snippet names for \"misc\":")
+  for _, name := range boom.FetchListSnippetNamesFor(data, "misc") {
+    fmt.Println(" ", " ", name)
+  }
+
+  fmt.Println(" ", "Snippet for \"img i-got-this\":")
+  fmt.Println(" ", " ", boom.FetchSnippet(data, "img", "i-got-this"))
 }
