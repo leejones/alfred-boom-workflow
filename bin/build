@@ -16,6 +16,6 @@ go build -o $BUILD_DIRECTORY/boom boom
 echo "Created package: $BUILD_DIRECTORY/boom"
 
 echo "Building alfred-boom-search binary..."
-go build -o $BUILD_DIRECTORY/alfred-boom-search ./src/alfred-boom-search.go
+go build -o $BUILD_DIRECTORY/alfred-boom-search $GOPATH/src/alfred-boom-search.go
 
 echo "Created binary: $BUILD_DIRECTORY/alfred-boom-search"
