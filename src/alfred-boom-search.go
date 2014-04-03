@@ -3,8 +3,6 @@ package main
 import "fmt"
 import "flag"
 import "os"
-import "io/ioutil"
-import "encoding/json"
 import "boom"
 
 
@@ -23,51 +21,17 @@ func main() {
   flag.Parse()
 
   arguments := flag.Args()
-
-  boom_data, _ := ioutil.ReadFile(storage_path)
-
-  type Snippet map[string]string
-
-  type List map[string][]Snippet
-
-  type ListOfLists map[string][]List
-
-  var m ListOfLists
-  json.Unmarshal(boom_data, &m)
-
-  for _, list := range m["lists"] {
-    for list_name, snippets := range list {
-      fmt.Println(list_name)
-      for _, snippet := range snippets {
-        for snippet_name, snippet_value := range snippet {
-          fmt.Println("  ", snippet_name)
-          fmt.Println("  ", "  ", snippet_value)
-        }
-      }
-    }
-  }
-
-  fmt.Println("Arguments:")
-  for _, argument := range arguments {
-    fmt.Println(" ", argument)
-  }
-
-  fmt.Println("Storage Path:")
-  fmt.Println(" ", storage_path)
-
-  fmt.Println("Calling functions from boom package:")
   data := boom.ParseBoomDataFile(storage_path)
 
-  fmt.Println(" ", "List names:")
-  for _, name := range boom.ListNames(data) {
-    fmt.Println(" ", " ", name)
+  if len(arguments) == 0 {
+    for _, name := range boom.ListNames(data) {
+      fmt.Println(name)
+    }
+  } else if len(arguments) == 1 {
+    for _, name := range boom.FetchListSnippetNamesFor(data, arguments[0]) {
+      fmt.Println(name)
+    }
+  } else if len(arguments) == 2 {
+    fmt.Println(boom.FetchSnippet(data, arguments[0], arguments[1]))
   }
-
-  fmt.Println(" ", "Snippet names for \"misc\":")
-  for _, name := range boom.FetchListSnippetNamesFor(data, "misc") {
-    fmt.Println(" ", " ", name)
-  }
-
-  fmt.Println(" ", "Snippet for \"img i-got-this\":")
-  fmt.Println(" ", " ", boom.FetchSnippet(data, "img", "i-got-this"))
 }
