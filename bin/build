@@ -4,7 +4,7 @@ set -e
 
 export GOPATH="$( cd "$( dirname "$0" )" && cd .. && pwd )"
 
-BUILD_DIRECTORY=./tmp/build
+BUILD_DIRECTORY=$GOPATH/tmp/build
 
 # create a clean directory
 rm -rf $BUILD_DIRECTORY
