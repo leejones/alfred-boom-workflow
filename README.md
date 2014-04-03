@@ -7,8 +7,7 @@ I'm learning Go so I currently have no idea what I'm doing :wink:
 ## Running the tests
 
 ```
-export GOPATH=$PWD
-go test boom
+bin/test
 ```
 
 ## Building the search binary
