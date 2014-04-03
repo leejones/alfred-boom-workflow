@@ -14,6 +14,5 @@ go test boom
 ## Building the search binary
 
 ```
-export GOPATH=$PWD
 bin/build
 ```

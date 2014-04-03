@@ -2,6 +2,8 @@
 
 set -e
 
+export GOPATH="$( cd "$( dirname "$0" )" && cd .. && pwd )"
+
 BUILD_DIRECTORY=./tmp/build
 
 # create a clean directory
