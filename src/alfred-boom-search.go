@@ -3,6 +3,7 @@ package main
 import "fmt"
 import "flag"
 import "os"
+import "regexp"
 import "boom"
 
 
@@ -28,10 +29,31 @@ func main() {
       fmt.Println(name)
     }
   } else if len(arguments) == 1 {
-    for _, name := range boom.FetchListSnippetNamesFor(data, arguments[0]) {
-      fmt.Println(name)
+    if (len(boom.FetchListSnippetNamesFor(data, arguments[0])) >= 1) {
+      for _, name := range boom.FetchListSnippetNamesFor(data, arguments[0]) {
+        fmt.Println(name)
+      }
+    } else {
+      for _, name := range boom.ListNames(data) {
+        matched, _ := regexp.MatchString(arguments[0], name)
+        if matched {
+          fmt.Println("Partial match:", name)
+        }
+      }
     }
   } else if len(arguments) == 2 {
-    fmt.Println(boom.FetchSnippet(data, arguments[0], arguments[1]))
+    snippet := boom.FetchSnippet(data, arguments[0], arguments[1])
+    if snippet != "" {
+      fmt.Println(snippet)
+    } else {
+      for _, name := range boom.FetchListSnippetNamesFor(data, arguments[0]) {
+        matched, _ := regexp.MatchString(arguments[1], name)
+        if matched {
+          snippet := boom.FetchSnippet(data, arguments[0], name)
+          fmt.Println("Partial match:", name)
+          fmt.Println("Snippet:", snippet)
+        }
+      }
+    }
   }
 }
