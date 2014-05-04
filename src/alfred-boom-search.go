@@ -6,7 +6,6 @@ import "os"
 import "regexp"
 import "boom"
 
-
 func main() {
   flag.Usage = func() {
     fmt.Fprintf(os.Stderr, "Usage of %s:\n\n", os.Args[0])
