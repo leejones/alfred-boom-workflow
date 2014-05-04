@@ -6,6 +6,14 @@ import "os"
 import "regexp"
 import "boom"
 
+// TODO test drive this function
+// TODO move to own file
+func PresentItem(name string, valid bool, autocomplete string) {
+  fmt.Printf("<item arg=\"%v\" valid=\"no\" autocomplete=\"%v\">\n", name, autocomplete)
+  fmt.Printf("<title>%v</title>\n",name)
+  fmt.Println("</item>")
+}
+
 func main() {
   flag.Usage = func() {
     fmt.Fprintf(os.Stderr, "Usage of %s:\n\n", os.Args[0])
@@ -26,9 +34,7 @@ func main() {
   fmt.Println("<items>")
   if len(arguments) == 0 {
     for _, name := range boom.ListNames(data) {
-      fmt.Printf("<item arg=\"%v\" valid=\"no\" autocomplete=\"%v\">\n", name, name)
-      fmt.Printf("<title>%v</title>\n",name)
-      fmt.Println("</item>")
+      PresentItem(name, false, name)
     }
   } else if len(arguments) == 1 {
     if (len(boom.FetchListSnippetNamesFor(data, arguments[0])) >= 1) {
