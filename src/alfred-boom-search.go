@@ -23,6 +23,7 @@ func main() {
   arguments := flag.Args()
   data := boom.ParseBoomDataFile(storage_path)
 
+  fmt.Println("<items>")
   if len(arguments) == 0 {
     for _, name := range boom.ListNames(data) {
       fmt.Println(name)
@@ -55,4 +56,5 @@ func main() {
       }
     }
   }
+  fmt.Println("</items>")
 }
