@@ -26,7 +26,9 @@ func main() {
   fmt.Println("<items>")
   if len(arguments) == 0 {
     for _, name := range boom.ListNames(data) {
-      fmt.Println(name)
+      fmt.Printf("<item arg=\"%v\" valid=\"no\" autocomplete=\"%v\">\n", name, name)
+      fmt.Printf("<title>%v</title>\n",name)
+      fmt.Println("</item>")
     }
   } else if len(arguments) == 1 {
     if (len(boom.FetchListSnippetNamesFor(data, arguments[0])) >= 1) {
