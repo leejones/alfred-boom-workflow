@@ -4,7 +4,9 @@ import "fmt"
 import "flag"
 import "os"
 import "regexp"
+import "strings"
 import "boom"
+import "alfred"
 
 func main() {
   flag.Usage = func() {
@@ -20,39 +22,89 @@ func main() {
 
   flag.Parse()
 
-  arguments := flag.Args()
+  arguments := strings.Fields(flag.Args()[0])
   data := boom.ParseBoomDataFile(storage_path)
 
-  if len(arguments) == 0 {
-    for _, name := range boom.ListNames(data) {
-      fmt.Println(name)
-    }
-  } else if len(arguments) == 1 {
+  alfred.PresentItemsOpen()
+
+  if len(arguments) == 1 {
     if (len(boom.FetchListSnippetNamesFor(data, arguments[0])) >= 1) {
-      for _, name := range boom.FetchListSnippetNamesFor(data, arguments[0]) {
-        fmt.Println(name)
+      if arguments[0] == flag.Args()[0] {
+        item := alfred.Item{
+          Argument: arguments[0],
+          Valid: "no",
+          Autocomplete: arguments[0] + " ",
+          Title: arguments[0],
+          Subtitle: "Search the " + arguments[0] + " list...",
+        }
+        alfred.PresentItem(item)
+      } else {
+        for _, name := range boom.FetchListSnippetNamesFor(data, arguments[0]) {
+          snippet := boom.FetchSnippet(data, arguments[0], name)
+          item := alfred.Item{
+            Argument: arguments[0] + " " + name,
+            Valid: "no",
+            Autocomplete: arguments[0] + " " + name + " ",
+            Title: name,
+            Subtitle: "Copy " + snippet + " to your clipboard",
+          }
+          alfred.PresentItem(item)
+        }
       }
     } else {
       for _, name := range boom.ListNames(data) {
         matched, _ := regexp.MatchString(arguments[0], name)
         if matched {
-          fmt.Println("Partial match:", name)
+          item := alfred.Item{
+            Argument: name,
+            Valid: "no",
+            Autocomplete: name + " ",
+            Title: name,
+            Subtitle: "Search the " + name + " list...",
+          }
+          alfred.PresentItem(item)
         }
       }
     }
   } else if len(arguments) == 2 {
     snippet := boom.FetchSnippet(data, arguments[0], arguments[1])
     if snippet != "" {
-      fmt.Println(snippet)
+      item := alfred.Item{
+        Argument: snippet,
+        Valid: "yes",
+        Autocomplete: arguments[0] + " " + arguments[1] + " ",
+        Title: arguments[1],
+        Subtitle: "Copy " + snippet + " to your clipboard",
+      }
+      alfred.PresentItem(item)
     } else {
       for _, name := range boom.FetchListSnippetNamesFor(data, arguments[0]) {
         matched, _ := regexp.MatchString(arguments[1], name)
         if matched {
           snippet := boom.FetchSnippet(data, arguments[0], name)
-          fmt.Println("Partial match:", name)
-          fmt.Println("Snippet:", snippet)
+          item := alfred.Item{
+            Argument: name,
+            Valid: "no",
+            Autocomplete: arguments[0] + " " + name + " ",
+            Title: name,
+            Subtitle: "Copy " + snippet + " to your clipboard",
+          }
+          alfred.PresentItem(item)
         }
       }
     }
+  } else {
+    for _, name := range boom.ListNames(data) {
+      item := alfred.Item{
+        Argument: name,
+        Valid: "no",
+        Autocomplete: name + " ",
+        Title: name,
+        Subtitle: "Search the " + name + " list...",
+      }
+      alfred.PresentItem(item)
+    }
   }
+
+  alfred.PresentItemsClose()
 }

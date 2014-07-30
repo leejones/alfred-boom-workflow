@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+SOURCES="config/info.plist assets/icon.png assets/AF823719-93F2-4269-988B-190D21A31C40.png tmp/build/alfred-boom-search"
+TARGET="boom.alfredworkflow"
+
+rm -rf $TARGET ./tmp/build ./tmp/package
+./bin/build 
+mkdir -p ./tmp/package
+cp $SOURCES tmp/package
+cd ./tmp/package
+zip $TARGET *
+echo "Installing..."
+open $TARGET 
+
