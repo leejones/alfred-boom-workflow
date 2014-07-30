@@ -35,7 +35,7 @@ func main() {
           Valid: "no",
           Autocomplete: arguments[0] + " ",
           Title: arguments[0],
-          Subtitle: "Search the " + arguments[0] + " list",
+          Subtitle: "Search the " + arguments[0] + " list...",
         }
         alfred.PresentItem(item)
       } else {
@@ -60,7 +60,7 @@ func main() {
             Valid: "no",
             Autocomplete: name + " ",
             Title: name,
-            Subtitle: "Search the " + name + " list",
+            Subtitle: "Search the " + name + " list...",
           }
           alfred.PresentItem(item)
         }
@@ -100,7 +100,7 @@ func main() {
         Valid: "no",
         Autocomplete: name + " ",
         Title: name,
-        Subtitle: "Search the " + name + " list",
+        Subtitle: "Search the " + name + " list...",
       }
       alfred.PresentItem(item)
     }
